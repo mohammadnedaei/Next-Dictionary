@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import { Volume2, Edit, Save } from "lucide-react";
+import { Volume2, Edit, Save, X } from "lucide-react";  // Added X icon for cancel
 import DeleteWordDialog from "./DeleteWordDialog"; // Import the dialog
 
 interface Word {
@@ -27,6 +27,11 @@ export default function DictionaryTable({ words, refreshData }: DictionaryTableP
     const startEditing = (word: Word) => {
         setEditingWordId(word._id);
         setEditedWord({ word: word.word, translation: word.translation });
+    };
+
+    const cancelEdit = () => {
+        setEditingWordId(null);
+        setEditedWord({ word: "", translation: "" });  // Reset the edited word state
     };
 
     const saveEdit = async () => {
@@ -80,16 +85,21 @@ export default function DictionaryTable({ words, refreshData }: DictionaryTableP
                             </td>
                             <td className="p-3 flex items-center justify-center space-x-3">
                                 {editingWordId === w._id ? (
-                                    <button onClick={saveEdit} className="text-green-600 hover:text-green-800">
-                                        <Save size={20} />
-                                    </button>
+                                    <>
+                                        <button onClick={saveEdit} className="text-green-600 hover:text-green-800">
+                                            <Save size={30} />
+                                        </button>
+                                        <button onClick={cancelEdit} className="text-red-600 hover:text-red-800">
+                                            <X size={30} />
+                                        </button>
+                                    </>
                                 ) : (
                                     <>
                                         <button onClick={() => pronounce(w.word)} className="text-blue-600 hover:text-blue-800">
-                                            <Volume2 size={20} />
+                                            <Volume2 size={30} />
                                         </button>
                                         <button onClick={() => startEditing(w)} className="text-yellow-600 hover:text-yellow-800">
-                                            <Edit size={20} />
+                                            <Edit size={25} />
                                         </button>
                                         <DeleteWordDialog id={w._id} refreshData={refreshData} />
                                     </>

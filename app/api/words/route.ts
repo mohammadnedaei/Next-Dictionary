@@ -110,21 +110,23 @@ export async function PUT(req: Request) {
             return NextResponse.json({ error: "All fields are required" }, { status: 400 });
         }
 
-        const existingWord = await Word.findOne({
+        // Check for another word with the same name (case-insensitive) and different ID
+        const conflictingWord = await Word.findOne({
             userId: session.user.email,
-            word: new RegExp(`^${word}$`, "i"),
-            _id: { $ne: id }
+            word: new RegExp(`^${word}$`, "i"),  // Case-insensitive match
+            _id: { $ne: id },  // Exclude the current word's ID
         });
 
-        if (existingWord) {
-            console.log("❌ Word already exists:", existingWord);
+        if (conflictingWord) {
+            console.log("❌ Word already exists:", conflictingWord);
             return NextResponse.json({ error: "Word already exists" }, { status: 409 });
         }
 
+        // Update the word and translation
         const updatedWord = await Word.findOneAndUpdate(
             { _id: id, userId: session.user.email },
             { word, translation },
-            { new: true }
+            { new: true }  // Return the updated document
         );
 
         if (!updatedWord) {
@@ -134,6 +136,7 @@ export async function PUT(req: Request) {
 
         console.log("🟢 Word updated:", updatedWord);
         return NextResponse.json({ message: "Updated successfully", updatedWord }, { status: 200 });
+
     } catch (error) {
         console.error("❌ Error in PUT /api/words:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

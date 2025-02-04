@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {Trash2} from "lucide-react";
 
 interface DeleteWordDialogProps {
     id: string;
@@ -27,7 +28,7 @@ export default function DeleteWordDialog({ id, refreshData }: DeleteWordDialogPr
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button className="text-red-600 hover:text-red-800">
-                    🗑 Delete
+                    <Trash2 size={25} />
                 </button>
             </DialogTrigger>
             <DialogContent>
