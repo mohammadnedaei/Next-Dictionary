@@ -22,7 +22,7 @@ export default function Navbar() {
                         <User />
                     </div>
 
-                    <button onClick={() => signOut()} className="bg-red-500 px-4 py-2 rounded-lg">Sign Out</button>
+                    <button onClick={() => signOut({ callbackUrl: "/" })} className="bg-red-500 px-4 py-2 rounded-lg">Sign Out</button>
                 </div>
             ) : (
                 <button onClick={() => signIn("google")} className="bg-green-500 px-4 py-2 rounded-lg">Sign In</button>

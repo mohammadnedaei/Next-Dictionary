@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import AddWordForm from "@/components/AddWordForm";
 import DictionaryTable from "@/components/DictionaryTable";
 import axios from "axios";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Dashboard() {
     const [words, setWords] = useState([]);
@@ -19,9 +20,12 @@ export default function Dashboard() {
     }, []);
 
     return (
+        <ProtectedRoute>
+
         <div>
             <AddWordForm refreshData={fetchData} />
             <DictionaryTable words={words} refreshData={fetchData} />
         </div>
+        </ProtectedRoute>
     );
 }
